@@ -8,6 +8,19 @@
  * @param {function(string)} callback - called when the URL of the current tab
  *   is found.
  */
+ chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
+   function(tabs){
+      myurl = tabs[0].url+"&feature=youtu.be&t=05s";
+      chrome.tabs.update(undefined, {url: myurl});
+      alert(myurl);
+   }
+);
+
+ /*chrome.tabs.getSelected(null,function(tab) {
+     var tablink = tab.url;
+ });
+ alert(tablink);
+
 function getCurrentTabUrl(callback) {
   // Query filter to be passed to chrome.tabs.query - see
   // https://developer.chrome.com/extensions/tabs#method-query
@@ -53,6 +66,7 @@ function getCurrentTabUrl(callback) {
  * @param {function(string)} url - called on page load. Try to find vid id from
  *   URL
  */
+ /*
 function getVideoID(url, callback, errorCallback) {
   var patt = new RegExp(
     "^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:" +
@@ -75,3 +89,4 @@ document.addEventListener('DOMContentLoaded', function() {
     alert(getVideoID(url));
   });
 });
+*/
