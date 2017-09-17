@@ -5,9 +5,18 @@ function addEntry(){
     alert("This is not a valid Youtube URL");
   }
   if isYTURL(url){
-    
+    var a = {};
+    aut = getChannel(url);
+    var channels = "";
+    var keywords = "";
+    chrome.storage.local.get('channels', function (result) {
+        channels = result.channels;
+        alert(result.channels);
+        $("#channels").val(channels);
+    });
+    a = JSON.parse(channels);
+    a[aut]=secondsOK;
   }
-  alert(secondsOK);
 }
 
 var myurl;
