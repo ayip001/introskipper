@@ -27,8 +27,21 @@ request.open("GET", url, true);
 request.send(null);
 request.onreadystatechange = function() {
   if (request.readyState == 4){
-    alert(SON.parse(request.responseText).author_url);
-    return JSON.parse(request.responseText).author_url;
+    auth=JSON.parse(request.responseText).author_url;
+    if (isYTURL(myurl))
+    {
+      // alert(getChannel(myurl));
+      var a = {};
+      a = JSON.parse(localStorage.getItem('a'));
+      if (a===null){
+      a = JSON.parse(localStorage['json']);
+    }
+      alert(a[auth]);
+      if (a != null) {
+      test = a[auth];
+      chrome.tabs.update(undefined, {url: myurl + "&t=" + test});
+    }
+    }
   }
 };
   // literally coping code from google doesn't work either lmao
@@ -50,18 +63,7 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
     function(tabs) {
       myurl = tabs[0].url;
       // reload the page with updated URL if match
-      if (isYTURL(myurl))
-      {
-        var auth = getChannel(myurl);
-        // alert(getChannel(myurl));
-        var a = {};
-        a = JSON.parse(localStorage.getItem(auth));
-        if (a == null) {
-          a = JSON.parse(localStorage['json']);
-        }
-        test = a[auth];
-        chrome.tabs.update(undefined, {url: myurl + "&t=" + test});
-      }
+      getChannel(myurl);
     }
   );
 });
