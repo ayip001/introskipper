@@ -9,7 +9,7 @@
  *   is found.
  */
  chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
-   function(tabs){
+   function(tabs) {
       myurl = tabs[0].url+"&feature=youtu.be&t=05s";
       chrome.tabs.update(undefined, {url: myurl});
       alert(myurl);
