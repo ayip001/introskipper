@@ -11,7 +11,7 @@ function isYTURL(url) {
 
 function getChannel(url) {
   if (!isYTURL(url))
-    return undefined;
+    return false;
   url = "https://www.youtube.com/oembed?url=" + url + "&format=json";
   function makeHttpObject() {
   try {return new XMLHttpRequest();}
