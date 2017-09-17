@@ -50,7 +50,11 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
       {
         getChannel(myurl);
         // alert(getChannel(myurl));
-        chrome.tabs.update(undefined, {url: myurl + "&t=5"});
+        var test = localStorage.getItem('likesColor');
+        if (test == null) {
+          test = localStorage['valueset'];
+        }
+        chrome.tabs.update(undefined, {url: myurl + "&t=" + test});
       }
     }
   );

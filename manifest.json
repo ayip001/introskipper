@@ -5,6 +5,8 @@
   "description": "I need no introduction",
   "version": "0.1",
 
+  "options_page" : "options.html",
+
   "background": {
     "scripts": [
       "background.js"
