@@ -7,7 +7,7 @@ function isYTURL(url) {
 
 function getChannel(url) {
   if (!isYTURL(url))
-    return undefined;
+    return isYTURL(url);
   url = "https://www.youtube.com/oembed?url=" + url + "&format=json";
   function makeHttpObject() {
   try {return new XMLHttpRequest();}
@@ -24,7 +24,7 @@ request.open("GET", url, true);
 request.send(null);
 request.onreadystatechange = function() {
   if (request.readyState == 4){
-    alert(JSON.parse(request.responseText).author_url);
+    return JSON.parse(request.responseText).author_url;
   }
 };
   // literally coping code from google doesn't work either lmao
