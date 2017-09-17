@@ -1,12 +1,28 @@
 function addEntry(){
   var secondsOK = document.getElementById("myinput").value;
+  url = myurl;
+  if (!isYTURL(url)){
+    alert("This is not a valid Youtube URL");
+  }
+  if isYTURL(url){
+    
+  }
   alert(secondsOK);
 }
+
+var myurl;
+
+ chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
+    function(tabs){
+       myurl = tabs[0].url
+    }
+ );
+
 function isYTURL(url) {
   // this regex verifies if a URL is a YouTube video
   var patt = /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.)?youtube\.com\/watch(?:\.php)?\?.*v=)([a-zA-Z0-9\-_]+)/g;
   // this also checks if there's already a time modification on the URL
-  return (patt.test(url) && url.indexOf("t=") == -1);
+  return (patt.test(url));
 }
 
 function getChannel(url) {
