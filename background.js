@@ -1,8 +1,26 @@
 function isYTURL(url) {
   // this regex verifies if a URL is a YouTube video
-  var patt = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu\.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/g;
+  var patt = /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.)?youtube\.com\/watch(?:\.php)?\?.*v=)([a-zA-Z0-9\-_]+)/g;
   // this also checks if there's already a time modification on the URL
   return (patt.test(url) && url.indexOf("t=") == -1);
+}
+
+function getChannel(url) {
+  if (!isYTURL(url))
+    return undefined;
+  url = "https://www.youtube.com/oembed?url=" + url + "&format=json";
+  // literally coping code from google doesn't work either lmao
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://api.example.com/data.json", true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      alert("this runs fine");
+      var resp = JSON.parse(xhr.responseText);
+      alert("and this doesnt for some fucking reason");
+    }
+  }
+  xhr.send();
+  // return resp.author_url;
 }
 
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
@@ -11,7 +29,11 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
       myurl = tabs[0].url;
       // reload the page with updated URL if match
       if (isYTURL(myurl))
+      {
+        getChannel(myurl);
+        // alert(getChannel(myurl));
         chrome.tabs.update(undefined, {url: myurl + "&t=5"});
+      }
     }
   );
 });
