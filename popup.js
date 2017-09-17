@@ -1,31 +1,36 @@
+chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
+   function(tabs){
+      myurl = tabs[0].url
+   }
+);
+var myurl;
+
 function addEntry(){
   var secondsOK = document.getElementById("myinput").value;
   url = myurl;
   if (!isYTURL(url)){
     alert("This is not a valid Youtube URL");
   }
-  if isYTURL(url){
+  if (isYTURL(url)){
+    var auth = getChannel(url);
     var a = {};
-    aut = getChannel(url);
-    var channels = "";
-    var keywords = "";
-    chrome.storage.local.get('channels', function (result) {
-        channels = result.channels;
-        alert(result.channels);
-        $("#channels").val(channels);
-    });
-    a = JSON.parse(channels);
-    a[aut]=secondsOK;
+    a = JSON.parse(localStorage.getItem(auth));
+    if (a == null) {
+      a = JSON.parse(localStorage['json']);
+    }
+    a[auth]=secondsOK;
+    alert(auth);
+    localStorage['json'] = a;
+    chrome.storage.sync.set({
+      a : a
+    }, function() {})
+
   }
 }
 
-var myurl;
 
- chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
-    function(tabs){
-       myurl = tabs[0].url
-    }
- );
+
+
 
 function isYTURL(url) {
   // this regex verifies if a URL is a YouTube video
@@ -37,7 +42,11 @@ function isYTURL(url) {
 function getChannel(url) {
   if (!isYTURL(url))
     return false;
+  if (url.indexOf('&')>-1){
+    url=url.substring(0,url.indexOf('&'))
+  }
   url = "https://www.youtube.com/oembed?url=" + url + "&format=json";
+  alert(url);
   function makeHttpObject() {
   try {return new XMLHttpRequest();}
   catch (error) {}
@@ -53,7 +62,9 @@ request.open("GET", url, true);
 request.send(null);
 request.onreadystatechange = function() {
   if (request.readyState == 4){
+    alert(JSON.parse(request.responseText).author_url);
     return JSON.parse(request.responseText).author_url;
   }
 };
+}
 document.getElementById('mybutton').onclick = addEntry;

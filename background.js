@@ -8,6 +8,9 @@ function isYTURL(url) {
 function getChannel(url) {
   if (!isYTURL(url))
     return isYTURL(url);
+    if (url.indexOf('&')>-1){
+      url=url.substring(0,url.indexOf('&'))
+    }
   url = "https://www.youtube.com/oembed?url=" + url + "&format=json";
   function makeHttpObject() {
   try {return new XMLHttpRequest();}
@@ -24,6 +27,7 @@ request.open("GET", url, true);
 request.send(null);
 request.onreadystatechange = function() {
   if (request.readyState == 4){
+    alert(SON.parse(request.responseText).author_url);
     return JSON.parse(request.responseText).author_url;
   }
 };
@@ -48,12 +52,14 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
       // reload the page with updated URL if match
       if (isYTURL(myurl))
       {
-        getChannel(myurl);
+        var auth = getChannel(myurl);
         // alert(getChannel(myurl));
-        var test = localStorage.getItem('likesColor');
-        if (test == null) {
-          test = localStorage['valueset'];
+        var a = {};
+        a = JSON.parse(localStorage.getItem(auth));
+        if (a == null) {
+          a = JSON.parse(localStorage['json']);
         }
+        test = a[auth];
         chrome.tabs.update(undefined, {url: myurl + "&t=" + test});
       }
     }
