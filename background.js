@@ -24,7 +24,7 @@ request.open("GET", url, true);
 request.send(null);
 request.onreadystatechange = function() {
   if (request.readyState == 4){
-    alert(request.responseText);
+    alert(JSON.parse(request.responseText).author_url);
   }
 };
   // literally coping code from google doesn't work either lmao
