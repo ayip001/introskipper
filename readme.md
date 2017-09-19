@@ -1,1 +1,1 @@
-Co-developed with Collin Yan
+Co-developed with Collin Yan.
